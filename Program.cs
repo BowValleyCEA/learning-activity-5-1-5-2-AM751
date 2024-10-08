@@ -1,46 +1,104 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿//LA 5.1:
 
-Console.WriteLine("Hello, World!");
-LearningActivity5_1();
-return;
+//PacMan High Score recording Script:
 
-void LearningActivity5_1()
+using System;
+
+class PacManHighScore
 {
-    Random randomScore = new Random();
-    while (true)
+    public string Initials { get; set; }
+    public int Score { get; set; }
+    public PacManHighScore(string initials, int score)
     {
-        GameSelection choice = ChooseOption();
-        //int newHighScore = randomScore.Next(1000, 1000000);
-        //Console.WriteLine($"You finished with a score of {newHighScore}");
-        //if the player 
-
+        Initials = initials;
+        Score = score;
     }
 }
 
-GameSelection ChooseOption()
+class Program
 {
-    bool validSelection = false;
-    int selection = 0;
-    while (!validSelection)
+    static List<PacManHighScore> highScores = new List<PacManHighScore>();
+
+    static void Main(string[] args)
     {
-        Console.WriteLine(
-            "Would you like to:\n\t 1: Play again\n\t 2: See the list of high scores\n\t 3: Exit the game?");
+        while (true)
+        {
+            Console.WriteLine("1. High Score Record.");
+            Console.WriteLine("2. View High Scores.");
+            Console.WriteLine("3. Exit.");
+            Console.WriteLine("4. Choose an Option.");
 
-        if (int.TryParse(Console.ReadLine(), out selection) && selection >= 1 && selection <= 3)
-            validSelection = true;
+            string choice = Console.ReadLine();
 
+            if (choice == "1")
+            {
+                RecordHighScore();
+            }
+
+            else if (choice == "2")
+            {
+                ViewHighScores();
+                break; //After viewing the HighScore, the program will be exited.
+            }
+
+            else if (choice == "3")
+            {
+                break; // Exits the Program immediately.
+            }
+
+            else
+            {
+                Console.WriteLine("You might have choosen the wrong option. Could you please Try Again?");
+            }
+        }
     }
 
-    return (GameSelection)selection;
+    static void RecordHighScore()
+    {
+        Console.WriteLine("Enter the Name of yours (Kindly make sure that its not more than 15 characters): ");
+        string initials = Console.ReadLine().ToUpper();
 
-}
-//Be kind, rewind.
-void LearningActivity5_2()
-{
+        while (initials.Length > 15)
+        {
+            Console.WriteLine(initials);
+            Console.WriteLine("Enter your Initials");
+            initials = Console.ReadLine().ToUpper();
+        }
 
-}
+        Console.WriteLine("Enter your Score: ");
+        int score;
+        while (!int.TryParse(Console.ReadLine(), out score) || score < 0)
+        {
+            Console.WriteLine("Invalid Score. Enter a Positive number");
+            Console.WriteLine("Enter your Score: ");
+        }
 
-enum GameSelection
-{
-    Play = 1, SeeHighScore = 2, Exit = 3
+        highScores.Add(new PacManHighScore(initials, score));
+        Console.WriteLine("High Score recorded");
+    }
+
+    static void ViewHighScores()
+    {
+        Console.WriteLine("\n High Scores:");
+
+        if (highScores.Count == 0)
+        {
+            Console.WriteLine("No high scores recorded.");
+        }
+
+        else
+        {
+            highScores.Sort((x, y) => y.Score.CompareTo(x.Score));
+        }
+
+        foreach (var highScore in highScores)
+        {
+            Console.WriteLine($"{highScore.Initials}: {highScore.Score}");
+        }
+
+        Console.WriteLine("\n Exiting...");
+    }
+
+
+
 }
