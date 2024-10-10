@@ -72,7 +72,7 @@ class VideoStore
     {
         Video video = new Video(name, genre, duration);
         videos.Add(video);
-        Console.WriteLine($"{name} has been added to the store.");
+        Console.WriteLine($"\nMovie:{name} has been added to the store.");
     }
     public void RentVideo(int videoId, string customerName)
     {
